@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>배너 등록</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link th:href="@{/css/banner-add.css}" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div th:replace="fragments/admin-header :: admin-header"></div>
+</header>
+<div class="col-md-10 col-md-offset-1">
+    <div class="panel panel-default panel-table">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col col-xs-6">
+                    <h3 class="panel-title" style="font-weight: bold">배너 등록</h3>
+                </div>
+            </div>
+        </div>
+        <div class="detail">
+            <form id="submitForm" method="post" enctype="multipart/form-data">
+                <!--            enctype 속성은 폼 데이터(form data)가 서버로 제출될 때 해당 데이터가 인코딩되는 방법을 명시-->
+                <!--            multipart/form-data > 파일이나 이미지를 서버로 전송할 때 주로 사용-->
+                <table class="table table-list">
+                    <tbody>
+                    <tr>
+                        <th>배너명</th>
+                        <td class="table-input">
+                            <div><input th:value="${detail.bannerName}" type="text" name="bannerName" class="form-control"
+                                        required/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>오픈 방법</th>
+                        <td>
+                            <p th:if="${detail.targetNewPage != null}">
+                                현재: <span th:text="${detail.targetNewPage}"> </span> Page
+                            </p>
+                            <div>
+                                <form method="post" action="/admin/member/target">
+                                <input th:value="${detail.targetNewPage}" type="hidden"/>
+                                <select th:value="${detail.targetNewPage}" name="targetNewPage" required class="form-control">
+                                    <option> 오픈 방법 선택</option>
+                                    <option th:selected="${#strings.equals(detail.targetNewPage,'NEW')}" value="NEW">새로운 페이지</option>
+                                    <option th:selected="${#strings.equals(detail.targetNewPage,'USING')}" value="USING">사용 중인 페이지</option>
+                                </select>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>정렬 순서</th>
+                        <td class="table-input">
+                            <div>
+                                <input th:if="${detail.sortValue == 0}" type="text" name="sortValue" class="form-control" required/>
+                                <input th:if="${detail.sortValue != 0}" th:value="${detail.sortValue}" type="text" name="sortValue" class="form-control"
+                                        required/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>링크 주소</th>
+                        <td>
+                            <div><input th:value="${detail.linkUrl}" type="text" name="linkUrl" class="form-control"
+                                        required/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>공개 여부</th>
+                        <td>
+                            <input th:field="${detail.frontOpen}"  type="checkbox" name="frontOpen"/>
+                            <label id="frontOpen">공개</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>첨부 파일</th>
+                        <td>
+                            <div class="button-place">
+                                <label for="file">Choose file to upload</label>
+                                <div><input type="file" name="file" id="file"/></div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <div class="inline-div">
+                        <button th:if="${editMode}" type="submit" class='btn btn-danger update-button btn-sm'>
+                            <span class="glyphicon glyphicon-edit"></span> 배너 수정
+                        </button>
+                        <button th:if="${!editMode}" type="submit" class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-plus"></span> 배너 등록
+                        </button>
+                        <a href="/admin/banner/list" class="btn btn-warning btn-sm">
+                            <span class="glyphicon glyphicon-th-list"></span> 목록 이동</a>
+                    </div>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

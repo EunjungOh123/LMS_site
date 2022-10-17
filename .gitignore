@@ -4,9 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 application.yml
-**/banner/**
+**/static/banner/**
 **/file/**
-**/res/**
+**/static/res/**
 
 ### STS ###
 .apt_generated
