@@ -7,6 +7,7 @@ import com.example.coursesite_final.banner.mapper.BannerMapper;
 import com.example.coursesite_final.banner.model.BannerParam;
 import com.example.coursesite_final.banner.repository.BannerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -101,6 +102,14 @@ public class BannerServiceImpl implements BannerService {
 
     @Override
     public boolean updateStatus(String bannerName, String targetNewPage) {
-        return false;
+        Optional<Banner> optionalBanner = bannerRepository.findByBannerName(bannerName);
+        if(!optionalBanner.isPresent()){
+            throw new UsernameNotFoundException("배너 정보가 없습니다.");
+        }
+        Banner banner = optionalBanner.get();
+
+        banner.setTargetNewPage(targetNewPage);
+        bannerRepository.save(banner);
+        return true;
     }
 }
