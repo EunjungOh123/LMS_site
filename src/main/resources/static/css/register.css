@@ -1,0 +1,93 @@
+body{
+    background: #FFFDF9;
+}
+.send-button{
+    background: #54C7C3;
+    width:100%;
+    font-weight: 600;
+    color:#fff;
+    padding: 8px 25px;
+}
+
+.g-button{
+    /*color: #fff !important;*/
+    border: 1px solid #EA4335;
+    background: #ea4335 !important;
+    width:100%;
+    font-weight: 600;
+    color:#fff;
+    padding: 8px 25px;
+}
+
+.g-button{
+    /*color: #fff !important;*/
+    border: 1px solid #FF9494;
+    background: #FF9494 !important;
+    width:100%;
+    font-weight: 600;
+    color:#fff;
+    padding: 8px 25px;
+}
+
+.my-input{
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    cursor: text;
+    padding: 8px 10px;
+    transition: border .1s linear;
+}
+.header-title{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+h1{
+    font-size: 31px;
+    font-weight: bold;
+    line-height: 40px;
+    color:#674747;
+}
+h2{
+    color: #7895B2;
+    font-size: 21px;
+    line-height: 32px;
+    font-weight: 400;
+}
+.login-or {
+    position: relative;
+    color: #aaa;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.span-or {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: -2px;
+    margin-left: -25px;
+    background-color: #FFFDF9;
+    width: 50px;
+    text-align: center;
+}
+.hr-or {
+    height: 1px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+@media screen and (max-width:480px){
+    h1{
+        font-size: 26px;
+    }
+    h2{
+        font-size: 20px;
+    }}
+.text {
+    font-weight: bold;
+    font-size: 13px;
+    color: #967E76;
+}
+.alertMessage {
+    color: crimson;
+    font-size: 12px;
+    font-weight: bold;
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 탈퇴</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+  <style>
+    .header-title {
+      margin-top: 20rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 31px;
+      font-weight: bold;
+      line-height: 40px;
+      color: #674747;
+    }
+    .btn-sm {
+      margin-top: 1rem;
+    }
+    .user-out {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<header>
+    <div th:replace="fragments/header :: header"></div>
+</header>
+<div class="header-title">
+    <h1 class="wv-heading--title">회원 탈퇴</h1>
+</div>
+<div class="user-out">
+  <p>
+    회원 탈퇴를 하면
+    서비스를 더이상 이용하실 수 없습니다.
+    <br/>
+    회원 탈퇴를 진행하시겠습니까?
+  </p>
+
+  <form id="submitForm" method="post">
+    <div>
+      <input type="password" name="password" placeholder="현재 비밀번호 입력" required/>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-danger btn-sm">
+        <span class="glyphicon glyphicon-remove"></span> 회원 탈퇴</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

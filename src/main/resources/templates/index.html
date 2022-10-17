@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+    <style>
+        .home-slider {
+            margin-top: 10rem;
+            margin-bottom: 4rem;
+            margin-left: 5rem;
+        }
+        *{
+            box-sizing: border-box;
+        }
+        .carousel-wrapper {
+            width: 500px;
+            height: 300px;
+            overflow: hidden;
+        }
+        .carousel-wrapper > .carousel{
+            display: flex;
+            transform: translate3d(0, 0, 0);
+            transition: transform 0.2s;
+        }
+        .carousel-wrapper > .carousel > img{
+            width: 500px;
+            height: 300px;
+        }
+        .carousel > #bannerCat > img{
+            width: 500px;
+            height: 300px;
+        }
+        .prev  {
+            margin-left: 5rem;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+        $(function(){
+            const prevButton = document.querySelector('.prev');
+            const nextButton = document.querySelector('.next');
+            const carousel = document.querySelector('.carousel');
+            let index = 0;
+            prevButton.addEventListener('click', function (){
+                if(index == 0)return;
+                index -=1;
+                carousel.style.transform = `translate3d(-${500 * index}px, 0,0)`;
+            });
+            nextButton.addEventListener('click', function (){
+                if(index ==3) return;
+                index +=1;
+                carousel.style.transform = `translate3d(-${500 * index}px, 0,0)`;
+            });
+        });
+    </script>
+</head>
+<body>
+<header>
+    <div th:replace="fragments/header :: header"></div>
+</header>
+<div class="home-slider">
+    <div class="carousel-wrapper">
+        <div class="carousel">
+            <p id="bannerCat" th:each="x : ${banners}">
+                <a th:href="${x.linkUrl}" th:if="${x.targetNewPage == 'USING'}"><img th:src="${x.bannerUrl}" alt="강의 바로가기" th:if="${x.sortValue==1}" width="500px" height="300px" /></a>
+                <a th:href="${x.linkUrl}" th:if="${x.targetNewPage == 'USING'}"><img th:src="${x.bannerUrl}" alt="강의 바로가기" th:if="${x.sortValue==2}" width="500px" height="300px" /></a>
+                <a th:href="${x.linkUrl}" th:if="${x.targetNewPage == 'USING'}"><img th:src="${x.bannerUrl}" alt="강의 바로가기" th:if="${x.sortValue==3}" width="500px" height="300px" /></a>
+                <a th:href="${x.linkUrl}" th:if="${x.targetNewPage == 'USING'}"><img th:src="${x.bannerUrl}" alt="강의 바로가기" th:if="${x.sortValue==4}" width="500px" height="300px" /></a>
+            </p>
+        </div>
+    </div>
+</div>
+<button class="btn btn-warning prev" type="button">prev</button>
+<button class="btn btn-warning next" type="button">next</button>
+</body>
+</html>

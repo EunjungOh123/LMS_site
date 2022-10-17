@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>강좌 등록</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link th:href="@{/css/course-add.css}" rel="stylesheet">
+    <script>
+        $(document).ready(function() {
+
+            $('#submitForm').on('submit', function() {
+
+                // 에디터의 내용이 textarea 적용된다.
+                oEditors.getById["contents"].exec("UPDATE_CONTENTS_FIELD", []);
+            });
+        });
+    </script>
+</head>
+<body>
+<header>
+    <div th:replace="fragments/admin-header :: admin-header"></div>
+</header>
+<div class="col-md-10 col-md-offset-1">
+    <div class="panel panel-default panel-table">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col col-xs-6">
+                    <h3 class="panel-title" style="font-weight: bold">강좌 등록</h3>
+                </div>
+            </div>
+        </div>
+        <div class="detail">
+            <form id="submitForm" method="post" enctype="multipart/form-data">
+                <!--            enctype 속성은 폼 데이터(form data)가 서버로 제출될 때 해당 데이터가 인코딩되는 방법을 명시-->
+                <!--            multipart/form-data > 파일이나 이미지를 서버로 전송할 때 주로 사용-->
+                <table class="table table-list">
+                    <tbody>
+                    <tr>
+                        <th>강좌 카테고리</th>
+                        <td>
+                            <div>
+                                <select name="categoryId" required class="form-control">
+                                    <option value=""> 카테고리 선택</option>
+                                    <option
+                                            th:selected="${detail.categoryId == x.id}"
+                                            th:each="x : ${category}" th:value="${x.id}" th:text="${x.categoryName}"> 기획
+                                    </option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>강좌명</th>
+                        <td class="table-input">
+                            <div><input th:value="${detail.subject}" type="text" name="subject" class="form-control"
+                                        required/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>키워드</th>
+                        <td class="table-input">
+                            <div><input th:value="${detail.keyword}" type="text" name="keyword" class="form-control"
+                                        required/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>요약 문구</th>
+                        <td class="table-input">
+                            <div><textarea th:text="${detail.summary}" name="summary" class="form-control"
+                                           required></textarea></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td class="table-input">
+                            <div><textarea th:text="${detail.contents}" id="contents" name="contents" class="form-control"></textarea>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>정가</th>
+                        <td class="table-input">
+                            <div><input th:value="${detail.price}" type="text"  name="price" class="form-control"
+                                        required/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>판매가</th>
+                        <td class="table-input">
+                            <div><input th:value="${detail.salePrice}" type="text" name="salePrice" class="form-control"
+                                        required/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>할인 종료일</th>
+                        <td class="table-input">
+                            <div><input th:value="${detail.saleEndDt}" type="text" name="saleEndDt"
+                                        class="form-control" required/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>첨부 파일</th>
+                        <td>
+                            <div class="button-place">
+                                <label for="file">Choose file to upload</label>
+                                <div><input type="file" name="file" id="file"/></div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <div class="inline-div">
+                        <button th:if="${editMode}" type="submit" class='btn btn-danger update-button btn-sm'>
+                            <span class="glyphicon glyphicon-edit"></span> 강의 수정
+                        </button>
+                        <button th:if="${!editMode}" type="submit" class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-plus"></span> 강의 등록
+                        </button>
+                        <a href="/admin/course/list" class="btn btn-warning btn-sm">
+                            <span class="glyphicon glyphicon-th-list"></span> 목록 이동</a>
+                    </div>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/res/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
+<script type="text/javascript">
+
+    var oEditors = [];
+    setTimeout(function() {
+        nhn.husky.EZCreator.createInIFrame({
+            oAppRef: oEditors,
+            elPlaceHolder: "contents",
+            sSkinURI: "/res/se2/SmartEditor2Skin.html",
+            fCreator: "createSEditor2"
+        });
+    }, 100);
+</script>
+</body>
+</html>

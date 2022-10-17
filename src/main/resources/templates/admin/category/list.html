@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>카테고리 관리</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link th:href="@{/css/category-list.css}" rel="stylesheet">
+    <script>
+        $(document).ready(function() {
+            $('form[name=deleteForm]').on('submit', function() {
+                if (!confirm(' 카테고리를 삭제하시겠습니까? ')) {
+                    return false;
+                }
+            });
+
+            $('button.update-button').on('click', function() {
+
+                if (!confirm('카테고리를 수정하시겠습니까?')) {
+                    return false;
+                }
+
+                var $this = $(this);
+                var $tr = $this.closest('tr');
+
+                var id = $tr.find('input[name=id]').val();
+                var categoryName = $tr.find('input[name=categoryName]').val();
+                var sortValue = $tr.find('input[name=sortValue]').val();
+                var usingYn = $tr.find('input[type=checkbox]')[0].checked;
+
+                $updateForm = $('form[name=updateForm]');
+                $updateForm.find('input[name=id]').val( id );
+                $updateForm.find('input[name=categoryName]').val( categoryName );
+                $updateForm.find('input[name=sortValue]').val( sortValue );
+                $updateForm.find('input[name=usingYn]').val( usingYn );
+                $updateForm.submit();
+            });
+        });
+    </script>
+</head>
+<body>
+<header>
+    <div th:replace="fragments/admin-header :: admin-header"></div>
+</header>
+<div class="col-md-10 col-md-offset-1">
+<form method="post" action="/admin/category/add">
+    <input type="text" class="form-control pull-left category" name="categoryName" required
+           placeholder="카테고리 이름 입력" style="width:150px"/>
+    <button class="btn btn-success btn-sm pull-left" type="submit">+ Add new categories</button>
+</form>
+</div>
+<div class="col-md-10 col-md-offset-1">
+    <div class="panel panel-default panel-table">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col col-xs-6">
+                    <h3 class="panel-title" style="font-weight: bold">카테고리</h3>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered table-list" style="text-align: center; vertical-align: center">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">이름</th>
+                <th class="text-center">순서</th>
+                <th class="text-center">사용 여부</th>
+                <th class="text-center">비고</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="x : ${list}">
+                <td>
+                    <input type="hidden" name="id" th:value="${x.id}"/>
+                    <div th:text="${x.id}"></div>
+                </td>
+                <td>
+                    <input th:value="${x.categoryName}" type="text" name="categoryName" class="form-control-sm" style="width:120px"/>
+                </td>
+                <td>
+                    <input th:value="${x.sortValue}" type="text" name="sortValue" class="form-control-sm" style="width:70px"/>
+                </td>
+                <td>
+                    <input th:checked="${x.usingYn}" type="checkbox" th:id="'usingYn_' + ${x.id}" th:name="'usingYn_' + ${x.id}" value="true"/>
+                    <label th:for="'usingYn_' + ${x.id}">사용</label>
+                </td>
+                <td>
+                    <div class="inline-div">
+                        <button class='btn btn-info btn-sm update-button' type="button">
+                            <span class="glyphicon glyphicon-edit"></span>Edit</button>
+                    </div>
+                    <div class="inline-div">
+                        <form name="deleteForm" method="post" action="/admin/category/delete">
+                            <input type="hidden" name="id" th:value="${x.id}"/>
+                            <button type="submit" class="btn btn-danger btn-sm" >
+                                <span class="glyphicon glyphicon-remove"></span>Del</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr th:if="${#lists.size(list) < 1}">
+                <td colspan="5" >
+                    <div class="nothing" style="font-weight: bold">내용이 없습니다.</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<form name="updateForm" method="post" action="/admin/category/update">
+    <input type="hidden" name="id"/>
+    <input type="hidden" name="categoryName"/>
+    <input type="hidden" name="sortValue"/>
+    <input type="hidden" name="usingYn" />
+</form>
+</body>
+</html>

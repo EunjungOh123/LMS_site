@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+    <style>
+        .submit-button {
+            color: #fff !important;
+            background: #ea4335;
+            width: 100%;
+            font-weight: 600;
+            color: #ea4335;
+            width: 100px;
+        }
+
+        .g-button {
+            /*color: #fff !important;*/
+            border: 1px solid #54C7C3;
+            background: #54C7C3 !important;
+            width: 100px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .place-detail {
+            margin-top: 1rem;
+            margin-left: 3rem;
+        }
+        .header-title {
+            margin-top: 10rem;
+            margin-left: 3rem;
+        }
+
+        h1 {
+            font-size: 31px;
+            font-weight: bold;
+            line-height: 40px;
+            color: #674747;
+        }
+
+        h2 {
+            color: #7895B2;
+            font-size: 21px;
+            line-height: 32px;
+            font-weight: 400;
+        }
+    </style>
+    <script>
+        $(function() {
+            $('#submitForm').on('submit', function() {
+
+                if (!confirm('수강 신청을 하시겠습니까?')) {
+                    return false;
+                }
+                var $thisForm = $(this);
+
+                var url = '/api/course/req.api';
+                var parameter = {
+                    courseId: $thisForm.find('input[name=id]').val()
+                };
+                axios.post(url, parameter).then(function(response) {
+                    console.log(response);
+                    console.log(response.data);
+
+                    response.data = response.data || {};
+                    response.data.header = response.data.header || {};
+
+                    if (!response.data.header.result) {
+                        alert(response.data.header.message);
+                        return false;
+                    }
+                    //정상적일때
+                    alert(' 강좌가 정상적으로 신청되었습니다. ');
+                    location.href = '/';
+                }).catch(function(err) {
+                    console.log(err);
+                });
+                return false;
+            });
+        });
+    </script>
+</head>
+<body>
+<header>
+    <div th:replace="fragments/header :: header"></div>
+</header>
+<div class="header-title">
+    <h1 class="wv-heading--title">강좌 상세 정보</h1>
+</div>
+<div class="place-detail" style="font-weight: bold">
+    <h2 style="color: #967E76">강좌명: <span th:text="${detail.subject}">강좌</span></h2>
+    <div th:utext="${detail.contents}">
+    </div>
+
+    <div>
+        <p>가격: <span th:text="${detail.price}">0</span></p>
+        <p>할인가격: <span th:text="${detail.salePrice}">0</span></p>
+    </div>
+
+    <div>
+
+    </div>
+
+    <div>
+        <form id="submitForm" method="post">
+            <input type="hidden" name="id" th:value="${detail.id}"/>
+            <button type="submit" class="btn btn-block btn-sm submit-button">수강 신청</button>
+            <a class="btn btn-block btn-sm g-button" th:href="@{/course}">강좌 목록</a>
+        </form>
+    </div>
+</div>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>강좌 목록</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link th:href="@{/css/course-list.css}" rel="stylesheet">
+    <script>
+        $(document).ready(function() {
+
+            $('#selectAll').on('click', function() {
+
+                var checked = $(this).is(':checked');
+
+
+                $('#dataList input[type=checkbox]').each(function(k, v) {
+                    $(this).prop('checked', checked);
+                });
+            });
+
+            $('#deleteButton').on('click', function() {
+                var $checked = $('#dataList input[type=checkbox]:checked');
+                if ($checked.length < 1) {
+                    alert(' 삭제할 데이터를 선택해 주세요. ');
+                    return false;
+                }
+                if (!confirm(' 선택한 데이터를 삭제하시겠습니까? ')) {
+                    return false;
+                }
+                var idList = [];
+                $.each($checked, function(k, v) {
+                    idList.push($(this).val());
+                });
+
+                console.log(idList);
+                console.log(idList.join(','));
+
+                var $deleteForm = $('form[name=deleteForm]');
+                $deleteForm.find('input[name=idList]').val( idList.join(',') );
+                $deleteForm.submit();
+            });
+        });
+    </script>
+</head>
+<body>
+<header>
+    <div th:replace="fragments/admin-header :: admin-header"></div>
+</header>
+
+<div class="col-md-10 col-md-offset-1">
+    <div class="inline-div">
+        <a type="button" id="deleteButton" class="btn btn-danger btn-sm">
+            <span class="glyphicon glyphicon-remove"></span> 선택 삭제</a>
+    </div>
+    <div class="inline-div">
+        <a href="/admin/course/add" type="button" class="btn btn-success btn-sm">
+            <span class="glyphicon glyphicon-plus"></span> 강의 등록</a>
+    </div>
+    <div class="panel panel-default panel-table">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col col-xs-6">
+                    <h3 class="panel-title" style="font-weight: bold">강좌 목록 (total <span th:text="${totalCount}"></span>개)</h3>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered table-list" style="text-align: center; vertical-align: center">
+            <thead>
+            <tr>
+                <th class="text-center">
+                    <input id="selectAll" type="checkbox"/>
+                </th>
+                <th class="text-center">NO</th>
+                <th class="text-center">강좌명</th>
+                <th class="text-center">등록일</th>
+            </tr>
+            </thead>
+            <tbody id="dataList">
+            <tr th:each="x : ${list}">
+                <td><input type="checkbox" th:value="${x.id}"/></td>
+                <td th:text="${x.seq}">1</td>
+                <td>
+                    <div><a th:href="'edit?id=' + ${x.id}" th:text="${x.subject}"> 강좌명 </a></div>
+                </td>
+                <td>
+                    <p th:text="${x.registeredAt}"></p>
+                </td>
+            </tr>
+            <tr th:if="${#lists.size(list) < 1}">
+                <td colspan="5" >
+                    <div class="nothing" style="font-weight: bold">내용이 없습니다.</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pager" th:utext="${pager}">
+    </div>
+</div>
+<form name="deleteForm" method="post" action="/admin/course/delete">
+    <input type="hidden" name="idList"/>
+</form>
+</body>
+</html>

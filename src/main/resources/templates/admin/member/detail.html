@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 회원 상세 정보 관리</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link th:href="@{/css/member-detail.css}" rel="stylesheet">
+    <style>
+        .col-md-offset-1 {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div th:replace="fragments/admin-header :: admin-header"></div>
+</header>
+<div class="col-md-10 col-md-offset-1">
+    <div class="panel panel-default panel-table">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col col-xs-6">
+                    <h3 class="panel-title" style="font-weight: bold">회원 상세 정보</h3>
+                </div>
+            </div>
+        </div>
+        <div class="detail">
+        <table class="table table-list">
+            <tbody>
+            <tr>
+                <th>아이디</th>
+                <td>
+                    <div th:text="${user.userId}"></div>
+                </td>
+            </tr>
+            <tr>
+                <th>이름</th>
+                <td>
+                    <div th:text="${user.name}"></div>
+                </td>
+            </tr>
+            <tr>
+                <th>닉네임</th>
+                <td>
+                    <div th:text="${user.nickname}"></div>
+                </td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td>
+                    <div th:text="${user.email}"></div>
+                </td>
+            </tr>
+            <tr>
+                <th>이메일 인증</th>
+                <td>
+                    <div th:text="${user.emailAuthYn}"></div>
+                </td>
+            </tr>
+            <tr>
+                <th>가입일</th>
+                <td>
+                    <div th:text="${user.registeredAt}"></div>
+                </td>
+            </tr>
+            <tr>
+                <th>관리자 여부</th>
+                <td>
+                    <div th:text="${user.roleType}"></div>
+                </td>
+            </tr>
+            <tr>
+                <th style="vertical-align: center">회원 상태</th>
+                <td>
+                    <p>
+                        현재상태: <span th:text="${user.userStatus}"></span>
+                    </p>
+                    <div>
+                        <form method="post" action="/admin/member/status">
+                            <input th:value="${user.userId}" type="hidden" name="userId"/>
+                            <select name="userStatus" style="height: 25px">
+                                <option value="REQUEST">가입 승인 중</option>
+                                <option value="AVAILABLE">이용 가능</option>
+                                <option value="STOP">정지</option>
+                            </select>
+                            <button type="submit">변경</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>비밀번호 변경</th>
+                <td>
+                    <div>
+                        <form method="post" id="submitForm" action="/admin/member/password">
+                            <input th:value="${user.userId}" type="hidden" name="userId"/>
+                            <input type="password" name="password" id="password"/>
+                            <button type="submit">비밀번호 초기화</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+        <a href="list" class="btn btn-success btn-sm pull-left">홈으로</a>
+    </div>
+    <table class="table table-striped table-bordered table-list">
+        <thead>
+        <tr class="center-align">
+            <th class="text-center">NO</th>
+            <th class="text-center">로그인 일자</th>
+            <th class="text-center">접속 IP</th>
+            <th class="text-center">접속 UserAgent</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="log : ${log}">
+            <td th:text="${log.seq}"></td>
+            <td th:text="${log.logDtText}"></td>
+            <td th:text="${log.userIp}"></td>
+            <td th:text="${log.userAgent}"></td>
+        </tr>
+        <tr th:if="${#lists.size(log) < 1}">
+            <td colspan="4" >
+                <div class="nothing" style="font-weight: bold; text-align: center">내용이 없습니다.</div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet'
+      type='text/css'>
+<script>
+    $(document).ready(function () {
+        $('#submitForm').on('submit', function () {
+            var password = document.getElementById("password");
+            var passwordCheck = /(?=.*[0-9])(?=.*[a-z])(?=.*\W)(?=\S+$).{6,12}/;
+
+            if (!passwordCheck.test(password.value)) {
+                alert('비밀번호는 영문자와 숫자, 특수기호가 적어도 1개 이상 포함된 6자~12자를 만족해야 합니다.')
+                return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

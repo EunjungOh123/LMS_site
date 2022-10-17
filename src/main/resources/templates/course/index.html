@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>강좌 정보 페이지</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+    <style>
+        .info-place {
+            margin-top: 10rem;
+            margin-left: 3rem;
+        }
+        span.price {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div th:replace="fragments/header :: header"></div>
+</header>
+<div class="info-place">
+    <a href="?">
+        전체 (<span th:text="${courseTotalCount}">0</span>)</a>
+
+    <th:block th:each="y : ${categoryList}">
+        |
+        <a th:href="'/course?categoryId=' + ${y.id}">
+            <span th:text="${y.categoryName}">카테고리명</span> (<span th:text="${y.courseCount}">0</span>)</a>
+    </th:block>
+
+    <hr/>
+</div>
+
+<ul>
+    <li th:each="x : ${list}">
+        <div>
+            <a th:href="'/course/' + ${x.id}">
+                <h3 th:text="${x.subject}">강좌명</h3>
+            </a>
+            <div>
+                <p th:text="${x.summary}"></p>
+                <p>
+                    판매가: <span class="price" th:text="${x.price}"></span>
+                    >> 할인가: <span th:text="${x.salePrice}"></span>
+                </p>
+            </div>
+        </div>
+    </li>
+</ul>
+</body>
+</html>
