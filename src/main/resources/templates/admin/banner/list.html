@@ -80,7 +80,7 @@
             </thead>
             <tbody id="dataList">
             <tr th:each="x : ${list}">
-                <td><input type="checkbox"/></td>
+                <td><input type="checkbox" th:value="${x.id}"/></td>
                 <td th:text="${x.seq}">1</td>
                 <td>
                     <div><a th:text="${x.bannerName}"
